@@ -1,0 +1,74 @@
+export const services = [
+  {
+    slug: 'ai-content',
+    title: 'AI Content Creation',
+    icon: '🤖',
+    heroDesc: 'Generate high-quality, SEO-optimized content at scale with our advanced AI engine.',
+    description: 'Our AI Content Creation platform uses state-of-the-art language models to generate blog posts, social media content, email campaigns, and landing page copy that matches your brand voice perfectly. From ideation to publication, we streamline your entire content workflow.',
+    features: [
+      { title: 'SEO-Optimized Writing', desc: 'Every piece of content is automatically optimized for search engines with keyword integration, meta descriptions, and readability scoring.' },
+      { title: 'Multiple Content Types', desc: 'Generate blog posts, social media captions, email newsletters, product descriptions, and landing page copy from a single platform.' },
+      { title: 'Brand Voice Matching', desc: 'Train the AI on your existing content to maintain consistent tone, style, and messaging across all generated content.' },
+      { title: 'Multi-Language Support', desc: 'Create content in English, Vietnamese, and over 20 other languages with native-quality output.' },
+    ],
+    pricing: [
+      { name: 'Starter', price: '$29/mo', features: ['50 AI generations', 'Basic templates', 'Email support'] },
+      { name: 'Pro', price: '$79/mo', features: ['Unlimited generations', 'Custom templates', 'Priority support', 'Brand voice training'], popular: true },
+      { name: 'Enterprise', price: 'Custom', features: ['API access', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee'] },
+    ],
+    faqs: [
+      { q: 'How does the AI generate content?', a: 'Our AI uses advanced language models trained on millions of high-quality articles. You provide the topic, keywords, and tone — the AI handles the rest, producing original content optimized for your goals.' },
+      { q: 'Can I edit the generated content?', a: 'Absolutely. All generated content is fully editable. We recommend using AI as a starting point and adding your unique insights and brand personality.' },
+      { q: 'Is the content unique and plagiarism-free?', a: 'Yes. Every piece of content is generated fresh and passes plagiarism checks. We never copy or recycle existing content.' },
+      { q: 'How long does it take to generate content?', a: 'Most content is generated in under 30 seconds. Longer pieces like in-depth blog posts may take up to a minute.' },
+    ],
+  },
+  {
+    slug: 'seo-analysis',
+    title: 'SEO Analysis',
+    icon: '🔍',
+    heroDesc: 'Data-driven insights to boost your search rankings and organic traffic.',
+    description: 'Our SEO Analysis tools provide comprehensive audits of your website and content performance. Get actionable recommendations backed by real data to improve your search visibility and drive more organic traffic.',
+    features: [
+      { title: 'Keyword Density Tracking', desc: 'Monitor keyword usage across your content to ensure optimal density without over-optimization.' },
+      { title: 'Readability Scoring', desc: 'Get real-time readability scores and suggestions to make your content accessible to a wider audience.' },
+      { title: 'Competitor Analysis', desc: 'See what your competitors rank for and identify content gaps you can exploit for quick wins.' },
+      { title: 'Technical SEO Audit', desc: 'Automated crawls identify broken links, slow pages, missing meta tags, and other technical issues hurting your rankings.' },
+    ],
+    pricing: [
+      { name: 'Starter', price: '$19/mo', features: ['5 site audits/month', 'Basic keyword tracking', 'Email reports'] },
+      { name: 'Pro', price: '$59/mo', features: ['Unlimited audits', 'Competitor tracking', 'API access', 'Weekly reports'], popular: true },
+      { name: 'Enterprise', price: 'Custom', features: ['White-label reports', 'Custom dashboards', 'Dedicated analyst', 'Priority crawling'] },
+    ],
+    faqs: [
+      { q: 'How often should I run an SEO audit?', a: 'We recommend running a full site audit monthly and tracking keywords weekly. Our Pro plan automates this with scheduled reports.' },
+      { q: 'Do you track competitor rankings?', a: 'Yes. On Pro and Enterprise plans, you can track up to 10 competitor domains and compare their keyword rankings against yours.' },
+      { q: 'What makes your SEO tools different?', a: 'We combine traditional SEO metrics with AI-powered content recommendations, giving you not just data but actionable steps to improve.' },
+      { q: 'Can I export reports?', a: 'Yes. All reports can be exported as PDF or CSV. Enterprise plans also support white-label PDF reports with your branding.' },
+    ],
+  },
+  {
+    slug: 'digital-marketing',
+    title: 'Digital Marketing',
+    icon: '📈',
+    heroDesc: 'End-to-end campaign management across all digital channels.',
+    description: 'Our Digital Marketing services cover everything from social media strategy to email automation and paid advertising. We help you build, execute, and optimize campaigns that deliver measurable results across every digital touchpoint.',
+    features: [
+      { title: 'Social Media Strategy', desc: 'Platform-specific strategies with content calendars, posting schedules, and engagement playbooks tailored to your audience.' },
+      { title: 'Email Marketing', desc: 'Automated email sequences, newsletter design, A/B testing, and detailed analytics to maximize your email ROI.' },
+      { title: 'Performance Analytics', desc: 'Real-time dashboards tracking conversions, engagement, ROI, and attribution across all your marketing channels.' },
+      { title: 'Paid Advertising', desc: 'Google Ads and social media ad management with AI-optimized bidding, targeting, and creative testing.' },
+    ],
+    pricing: [
+      { name: 'Starter', price: '$49/mo', features: ['1 social platform', 'Basic analytics', 'Monthly reporting'] },
+      { name: 'Pro', price: '$149/mo', features: ['All platforms', 'Email automation', 'Weekly reporting', 'A/B testing'], popular: true },
+      { name: 'Enterprise', price: 'Custom', features: ['Dedicated strategist', 'Ad management', 'Custom integrations', 'Real-time dashboards'] },
+    ],
+    faqs: [
+      { q: 'Which social media platforms do you support?', a: 'We support all major platforms: Facebook, Instagram, Twitter/X, LinkedIn, TikTok, YouTube, and Pinterest.' },
+      { q: 'Do you manage paid advertising?', a: 'Yes. Our Pro and Enterprise plans include Google Ads and social media ad management with AI-optimized bidding strategies.' },
+      { q: 'How do you measure campaign success?', a: 'We track KPIs specific to your goals: conversions, engagement rate, cost per acquisition, return on ad spend, and customer lifetime value.' },
+      { q: 'Can I cancel anytime?', a: 'Yes. All plans are month-to-month with no long-term contracts. Cancel anytime from your dashboard.' },
+    ],
+  },
+]

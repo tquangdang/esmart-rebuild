@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "blog": "Blog",
+    "assessment": "Assessment",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
+  "home": {
+    "heroTitle": "Smart Digital Solutions for Your Business",
+    "heroSubtitle": "We help businesses grow with AI-powered content creation, SEO optimization, and digital marketing strategies.",
+    "heroCta": "Get Started",
+    "servicesTitle": "Our Services",
+    "service1Title": "AI Content Creation",
+    "service1Desc": "Generate SEO-optimized blog posts, social media content, and marketing copy powered by AI.",
+    "service2Title": "Digital Marketing",
+    "service2Desc": "Strategic campaigns across social media, email, and search to grow your audience.",
+    "service3Title": "SEO Optimization",
+    "service3Desc": "Data-driven SEO analysis to boost your search rankings and organic traffic.",
+    "testimonialsTitle": "What Our Clients Say"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Trang Chủ",
+    "about": "Giới Thiệu",
+    "services": "Dịch Vụ",
+    "blog": "Blog",
+    "assessment": "Đánh Giá",
+    "contact": "Liên Hệ",
+    "dashboard": "Bảng Điều Khiển",
+    "signIn": "Đăng Nhập",
+    "signOut": "Đăng Xuất"
+  },
+  "home": {
+    "heroTitle": "Giải Pháp Số Thông Minh Cho Doanh Nghiệp",
+    "heroSubtitle": "Chúng tôi giúp doanh nghiệp phát triển với công cụ tạo nội dung AI, tối ưu hóa SEO và chiến lược tiếp thị số.",
+    "heroCta": "Bắt Đầu",
+    "servicesTitle": "Dịch Vụ Của Chúng Tôi",
+    "service1Title": "Tạo Nội Dung AI",
+    "service1Desc": "Tạo bài viết blog, nội dung mạng xã hội và bản sao tiếp thị được tối ưu hóa SEO bằng AI.",
+    "service2Title": "Tiếp Thị Số",
+    "service2Desc": "Chiến dịch chiến lược trên mạng xã hội, email và tìm kiếm để phát triển khán giả.",
+    "service3Title": "Tối Ưu Hóa SEO",
+    "service3Desc": "Phân tích SEO dựa trên dữ liệu để tăng thứ hạng tìm kiếm và lưu lượng truy cập tự nhiên.",
+    "testimonialsTitle": "Khách Hàng Nói Gì"
+  }
+}
