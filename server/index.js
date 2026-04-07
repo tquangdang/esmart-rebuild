@@ -1,7 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 
-require('dotenv').config()
+try { require('dotenv').config() } catch {}
+
 const { initializeModels } = require('./models')
 initializeModels()
 const app = express()
