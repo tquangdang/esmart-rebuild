@@ -4,10 +4,12 @@ const Content = require('./Content')
 
 const initializeModels = async () => {
   try {
-    await sequelize.sync({ alter: true })
-    console.log('Database models synced successfully')
+    await sequelize.authenticate()
+    await sequelize.sync()
+    console.log('Database connected and models synced')
   } catch (error) {
-    console.error('Failed to sync models:', error.message)
+    console.error('Database init failed:', error.message)
+    throw error
   }
 }
 
