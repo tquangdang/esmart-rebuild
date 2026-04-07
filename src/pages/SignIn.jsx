@@ -36,13 +36,11 @@ export default function SignIn() {
     <section className="min-h-screen flex animate-page-in">
       {/* Left brand panel */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 hero-pattern hero-glow flex-col items-center justify-center p-12 text-white">
-        <div className="absolute top-8 left-8 z-10">
-          <Link to="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm">
+        <div className="text-center max-w-md">
+          <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm mb-10">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
             Back to Home
           </Link>
-        </div>
-        <div className="text-center max-w-md">
           <div className="w-20 h-20 bg-white/10 backdrop-blur-sm border border-white/10 rounded-3xl flex items-center justify-center mx-auto mb-8">
             <IconSparkles className="w-10 h-10 text-blue-300" />
           </div>
