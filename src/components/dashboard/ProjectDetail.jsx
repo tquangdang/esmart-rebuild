@@ -1,28 +1,66 @@
-const projectContents = {
-  1: [
-    { id: 'c1', type: 'Blog', topic: 'AI in Marketing Q1 Trends', status: 'Published', date: 'Mar 12, 2026' },
-    { id: 'c2', type: 'Blog', topic: 'Content Strategy for Small Business', status: 'Published', date: 'Mar 14, 2026' },
-    { id: 'c3', type: 'Blog', topic: 'SEO Best Practices 2026', status: 'Draft', date: 'Mar 16, 2026' },
-  ],
-  2: [
-    { id: 'c4', type: 'Email', topic: 'Product Launch Announcement', status: 'Draft', date: 'Mar 15, 2026' },
-    { id: 'c5', type: 'Email', topic: 'Follow-up Sequence', status: 'Draft', date: 'Mar 17, 2026' },
-  ],
-  3: [
-    { id: 'c6', type: 'Social Media', topic: 'Spring Sale Announcement', status: 'Published', date: 'Mar 20, 2026' },
-    { id: 'c7', type: 'Social Media', topic: 'Behind the Scenes Post', status: 'In Progress', date: 'Mar 22, 2026' },
-    { id: 'c8', type: 'Social Media', topic: 'Customer Spotlight', status: 'Draft', date: 'Mar 24, 2026' },
-  ],
-}
+import { useState, useEffect } from 'react'
+import api from '../../config/api'
 
 const statusColors = {
-  Published: 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400',
-  'In Progress': 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-  Draft: 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
+  completed: 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400',
+  published: 'bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400',
+  in_progress: 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+  draft: 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400',
 }
 
-export default function ProjectDetail({ project, onBack }) {
-  const contents = projectContents[project.id] || []
+const typeIconPaths = {
+  blog: 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
+  email: 'M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75',
+  social: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
+  landing: 'M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25',
+}
+const typeColors = {
+  blog: 'text-blue-500 bg-blue-50 dark:bg-blue-900/20',
+  email: 'text-purple-500 bg-purple-50 dark:bg-purple-900/20',
+  social: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20',
+  landing: 'text-orange-500 bg-orange-50 dark:bg-orange-900/20',
+}
+
+export default function ProjectDetail({ projectId, onBack }) {
+  const [project, setProject] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const res = await api.get(`/projects/${projectId}`)
+        setProject(res.data)
+      } catch {
+        setProject(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProject()
+  }, [projectId])
+
+  if (loading) {
+    return (
+      <div className="animate-fade-in space-y-4">
+        <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+        <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded-2xl animate-pulse" />
+        <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+      </div>
+    )
+  }
+
+  if (!project) {
+    return (
+      <div className="animate-fade-in">
+        <button onClick={onBack} className="text-blue-600 dark:text-blue-400 hover:text-blue-800 font-medium mb-6 transition active:scale-95">
+          &larr; Back to Projects
+        </button>
+        <p className="text-gray-400 text-center py-12">Project not found.</p>
+      </div>
+    )
+  }
+
+  const contents = project.Contents || []
 
   return (
     <div className="animate-fade-in">
@@ -34,7 +72,10 @@ export default function ProjectDetail({ project, onBack }) {
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-2xl font-bold dark:text-white">{project.title}</h2>
-            <p className="text-gray-400 text-sm mt-1">{project.type} · Created {project.date}</p>
+            <p className="text-gray-400 text-sm mt-1">
+              {project.type} · Created {new Date(project.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </p>
+            {project.description && <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">{project.description}</p>}
           </div>
           <span className={`text-xs font-bold px-3 py-1 rounded-full ${statusColors[project.status] || 'bg-gray-100 dark:bg-gray-700 text-gray-500'}`}>
             {project.status}
@@ -47,15 +88,23 @@ export default function ProjectDetail({ project, onBack }) {
         {contents.map((item) => (
           <div key={item.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl hover:shadow-sm transition-all">
             <div className="flex items-center gap-4">
-              <span className="text-2xl">{item.type === 'Blog' ? '📝' : item.type === 'Email' ? '✉️' : '📱'}</span>
+              <div className={`w-10 h-10 rounded-xl ${typeColors[item.contentType] || 'text-gray-500 bg-gray-50 dark:bg-gray-800'} flex items-center justify-center shrink-0`}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d={typeIconPaths[item.contentType] || typeIconPaths.blog} /></svg>
+              </div>
               <div>
                 <p className="font-medium dark:text-white">{item.topic}</p>
-                <p className="text-xs text-gray-400">{item.type} · {item.date}</p>
+                <p className="text-xs text-gray-400">
+                  {item.contentType} · {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${statusColors[item.status] || ''}`}>{item.status}</span>
-              <button className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-medium transition active:scale-95">View</button>
+              {item.tone && (
+                <span className="text-xs text-gray-400 hidden sm:inline">{item.tone}</span>
+              )}
+              <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${statusColors[item.status] || 'bg-gray-100 dark:bg-gray-700 text-gray-500'}`}>
+                {item.status || 'generated'}
+              </span>
             </div>
           </div>
         ))}

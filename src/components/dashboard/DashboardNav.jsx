@@ -16,18 +16,18 @@ export default function DashboardNav() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 px-6 py-3 flex items-center justify-between">
-      <Link to="/" className="text-xl font-bold text-blue-900 dark:text-blue-400 hover:opacity-80 transition">
-        eSmart
+    <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700/50 px-6 py-3 flex items-center justify-between">
+      <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition">
+        <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">e</div>
+        <span className="text-lg font-bold text-gray-900 dark:text-white">eSmart</span>
       </Link>
       <div className="flex items-center gap-3">
-        {user?.photoURL && (
-          <img
-            src={user.photoURL}
-            alt=""
-            className="w-8 h-8 rounded-full ring-2 ring-blue-100 dark:ring-blue-800"
-            referrerPolicy="no-referrer"
-          />
+        {user?.photoURL ? (
+          <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full ring-2 ring-blue-100 dark:ring-blue-800" referrerPolicy="no-referrer" />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400">
+            {user?.displayName?.[0] || '?'}
+          </div>
         )}
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
           {user?.displayName}

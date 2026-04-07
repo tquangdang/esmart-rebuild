@@ -89,7 +89,10 @@ export default function Navbar() {
       <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center px-6 py-3 gap-4">
         {/* Logo */}
         <div className="justify-self-start">
-          <Link to="/" className="text-xl font-bold text-blue-900 dark:text-blue-400">eSmart</Link>
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">e</div>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">eSmart</span>
+          </Link>
         </div>
 
         {/* Center nav links */}
@@ -136,7 +139,7 @@ export default function Navbar() {
               onClick={() => i18n.changeLanguage('en')}
               className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
                 lang === 'en'
-                  ? 'bg-blue-900 dark:bg-blue-600 text-white'
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white'
                   : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >🇺🇸 EN</button>
@@ -144,7 +147,7 @@ export default function Navbar() {
               onClick={() => i18n.changeLanguage('vi')}
               className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
                 lang === 'vi'
-                  ? 'bg-blue-900 dark:bg-blue-600 text-white'
+                  ? 'bg-blue-600 dark:bg-blue-500 text-white'
                   : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
             >🇻🇳 VI</button>
@@ -201,7 +204,7 @@ export default function Navbar() {
               )}
             </div>
           ) : (
-            <Link to="/signin" className="bg-blue-900 dark:bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 dark:hover:bg-blue-500 active:scale-95 transition-all text-center">
+            <Link to="/signin" className="bg-blue-600 dark:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-400 active:scale-95 transition-all text-center">
               <StableText en={authLabels.signIn.en} vi={authLabels.signIn.vi} lang={lang} />
             </Link>
           )}
@@ -210,7 +213,10 @@ export default function Navbar() {
 
       {/* Mobile header */}
       <div className="flex md:hidden justify-between items-center px-5 py-3">
-        <Link to="/" className="text-xl font-bold text-blue-900 dark:text-blue-400">eSmart</Link>
+        <Link to="/" className="flex items-center gap-2">
+          <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">e</div>
+          <span className="text-xl font-bold text-gray-900 dark:text-white">eSmart</span>
+        </Link>
         <div className="flex items-center gap-1.5">
           <button
             onClick={toggleTheme}
@@ -227,8 +233,8 @@ export default function Navbar() {
             )}
           </button>
           <div className="flex gap-0.5">
-            <button onClick={() => i18n.changeLanguage('en')} className={`px-1.5 py-1 rounded-lg text-xs font-bold transition ${lang === 'en' ? 'bg-blue-900 dark:bg-blue-600 text-white' : 'text-gray-400'}`}>🇺🇸</button>
-            <button onClick={() => i18n.changeLanguage('vi')} className={`px-1.5 py-1 rounded-lg text-xs font-bold transition ${lang === 'vi' ? 'bg-blue-900 dark:bg-blue-600 text-white' : 'text-gray-400'}`}>🇻🇳</button>
+            <button onClick={() => i18n.changeLanguage('en')} className={`px-1.5 py-1 rounded-lg text-xs font-bold transition ${lang === 'en' ? 'bg-blue-600 dark:bg-blue-500 text-white' : 'text-gray-400'}`}>🇺🇸</button>
+            <button onClick={() => i18n.changeLanguage('vi')} className={`px-1.5 py-1 rounded-lg text-xs font-bold transition ${lang === 'vi' ? 'bg-blue-600 dark:bg-blue-500 text-white' : 'text-gray-400'}`}>🇻🇳</button>
           </div>
           <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
             <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -282,7 +288,7 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <Link to="/signin" onClick={closeMenu} className="bg-blue-900 dark:bg-blue-600 text-white px-5 py-3 rounded-lg text-center font-medium hover:bg-blue-800 dark:hover:bg-blue-500 transition mt-2">
+            <Link to="/signin" onClick={closeMenu} className="bg-blue-600 dark:bg-blue-500 text-white px-5 py-3 rounded-lg text-center font-medium hover:bg-blue-700 dark:hover:bg-blue-400 transition mt-2">
               {lang === 'en' ? authLabels.signIn.en : authLabels.signIn.vi}
             </Link>
           )}

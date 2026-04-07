@@ -2,7 +2,8 @@ export const services = [
   {
     slug: 'ai-content',
     title: 'AI Content Creation',
-    icon: '🤖',
+    iconName: 'robot',
+    iconColor: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
     heroDesc: 'Generate high-quality, SEO-optimized content at scale with our advanced AI engine.',
     description: 'Our AI Content Creation platform uses state-of-the-art language models to generate blog posts, social media content, email campaigns, and landing page copy that matches your brand voice perfectly. From ideation to publication, we streamline your entire content workflow.',
     features: [
@@ -26,7 +27,8 @@ export const services = [
   {
     slug: 'seo-analysis',
     title: 'SEO Analysis',
-    icon: '🔍',
+    iconName: 'search',
+    iconColor: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
     heroDesc: 'Data-driven insights to boost your search rankings and organic traffic.',
     description: 'Our SEO Analysis tools provide comprehensive audits of your website and content performance. Get actionable recommendations backed by real data to improve your search visibility and drive more organic traffic.',
     features: [
@@ -50,7 +52,8 @@ export const services = [
   {
     slug: 'digital-marketing',
     title: 'Digital Marketing',
-    icon: '📈',
+    iconName: 'chart',
+    iconColor: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400',
     heroDesc: 'End-to-end campaign management across all digital channels.',
     description: 'Our Digital Marketing services cover everything from social media strategy to email automation and paid advertising. We help you build, execute, and optimize campaigns that deliver measurable results across every digital touchpoint.',
     features: [
