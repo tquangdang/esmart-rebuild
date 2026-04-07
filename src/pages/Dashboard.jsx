@@ -108,20 +108,20 @@ export default function Dashboard() {
   const [editedContent, setEditedContent] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState(null)
 
-  const fetchProjects = async () => {
+  const fetchProjects = async (silent = false) => {
     setProjectsLoading(true)
     try {
       const res = await api.get('/projects')
       setProjects(res.data)
     } catch {
-      showToast('Failed to load projects', 'error')
+      if (!silent) showToast('Failed to load projects', 'error')
     } finally {
       setProjectsLoading(false)
     }
   }
 
   useEffect(() => {
-    if (user) fetchProjects()
+    if (user) fetchProjects(true)
   }, [user])
 
   if (loading) return <DashboardSkeleton />
