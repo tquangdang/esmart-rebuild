@@ -9,6 +9,7 @@ import ProjectDetail from '../components/dashboard/ProjectDetail'
 import { SkeletonCard, SkeletonLine } from '../components/Skeleton'
 import { useToast } from '../stores/toast'
 import usePageTitle from '../hooks/usePageTitle'
+import useContentStream from '../hooks/useContentStream'
 import api from '../config/api'
 
 function DashboardSkeleton() {
@@ -107,6 +108,7 @@ export default function Dashboard() {
   const [generating, setGenerating] = useState(false)
   const [editedContent, setEditedContent] = useState('')
   const [deleteConfirm, setDeleteConfirm] = useState(null)
+  const { streamedContent, streaming, streamDone, contentId, startStream, cancelStream, resetStream } = useContentStream()
 
   const fetchProjects = async (silent = false) => {
     setProjectsLoading(true)
@@ -132,28 +134,43 @@ export default function Dashboard() {
     setFormData({ type: '', topic: '', keywords: '', tone: '' })
     setGeneratedResult(null)
     setEditedContent('')
+    cancelStream()
+    resetStream()
   }
 
   const handleGenerate = async () => {
     setGenerating(true)
+    resetStream()
     try {
       const projectRes = await api.post('/projects', {
         title: formData.topic,
         type: formData.type,
       })
-      const contentRes = await api.post('/content/generate', {
+
+      setStep(3)
+
+      const result = await startStream({
         projectId: projectRes.data.id,
         topic: formData.topic,
         keywords: formData.keywords,
         tone: formData.tone || 'Professional',
         contentType: formData.type,
       })
-      setGeneratedResult(contentRes.data)
-      setEditedContent(contentRes.data.generatedContent || '')
-      setStep(3)
+
+      setGeneratedResult({
+        id: result.id,
+        projectId: projectRes.data.id,
+        topic: formData.topic,
+        keywords: formData.keywords,
+        tone: formData.tone || 'Professional',
+        contentType: formData.type,
+        generatedContent: result.content,
+      })
+      setEditedContent(result.content)
       fetchProjects()
     } catch {
       showToast('Content generation failed. Please try again.', 'error')
+      if (!generatedResult) setStep(2)
     } finally {
       setGenerating(false)
     }
@@ -290,27 +307,55 @@ export default function Dashboard() {
       <div className="animate-fade-in">
         <StepBar currentStep={step} />
 
-        {/* Step 3: Editor */}
-        {step === 3 && generatedResult ? (
+        {/* Step 3: Editor (shows streaming content live) */}
+        {step === 3 ? (
           <div>
-            <h2 className="text-2xl font-bold mb-2 dark:text-white">Edit Your Content</h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">Review and refine the AI-generated content before finalizing.</p>
+            <h2 className="text-2xl font-bold mb-2 dark:text-white">
+              {streaming ? 'Generating Content...' : 'Edit Your Content'}
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">
+              {streaming
+                ? 'AI is writing your content in real-time. Watch it appear below.'
+                : 'Review and refine the AI-generated content before finalizing.'}
+            </p>
+            {streaming && (
+              <div className="flex items-center gap-3 mb-4 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
+                <svg className="w-5 h-5 text-blue-500 animate-spin flex-shrink-0" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                  Streaming tokens... {streamedContent.length} characters received
+                </span>
+              </div>
+            )}
             <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
+              value={streaming ? streamedContent : editedContent}
+              onChange={(e) => { if (!streaming) setEditedContent(e.target.value) }}
+              readOnly={streaming}
               rows={18}
-              className="w-full p-5 border border-gray-200 dark:border-gray-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:text-white font-mono text-sm leading-relaxed resize-y"
+              className={`w-full p-5 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:text-white font-mono text-sm leading-relaxed resize-y ${
+                streaming
+                  ? 'border-blue-300 dark:border-blue-700 animate-pulse'
+                  : 'border-gray-200 dark:border-gray-700'
+              }`}
             />
             <div className="flex gap-3 mt-6">
               <button
-                onClick={() => { setEditedContent(generatedResult.generatedContent || ''); setStep(2) }}
-                className="px-6 py-3 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition font-medium dark:text-white"
+                onClick={() => {
+                  cancelStream()
+                  setEditedContent(generatedResult?.generatedContent || '')
+                  setStep(2)
+                }}
+                disabled={streaming}
+                className="px-6 py-3 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition font-medium dark:text-white disabled:opacity-40"
               >
                 Back
               </button>
               <button
                 onClick={() => setStep(4)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 active:scale-95 transition-all font-medium"
+                disabled={streaming}
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 active:scale-95 transition-all font-medium disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Save & Preview
               </button>

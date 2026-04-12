@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Go
+go-service/.env
+go-service/*.exe
+go-service/*.exe~
