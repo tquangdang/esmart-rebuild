@@ -9,9 +9,37 @@ import (
 	"esmart-go/agents"
 	"esmart-go/config"
 	"esmart-go/models"
+	"esmart-go/storage"
 
 	"github.com/gin-gonic/gin"
 )
+
+// GetContentDownloadURL returns a freshly-signed S3 URL for the given content.
+// We never store presigned URLs in the DB (they expire) — instead the DB holds
+// the canonical S3 *key* and we re-sign on every request. Returns 404 if the
+// content has no associated S3 object (e.g. generated before storage was
+// enabled), and 503 if storage is not configured on this instance.
+func GetContentDownloadURL(c *gin.Context) {
+	id := c.Param("id")
+
+	var content models.Content
+	if err := config.DB.First(&content, "id = ?", id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Content not found"})
+		return
+	}
+	if content.S3URL == nil || *content.S3URL == "" {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No S3 object for this content"})
+		return
+	}
+
+	url, err := storage.PresignDownload(c.Request.Context(), *content.S3URL)
+	if err != nil {
+		slog.Warn("presign on demand failed", "id", id, "err", err)
+		c.JSON(http.StatusServiceUnavailable, gin.H{"error": "Storage unavailable"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"url": url})
+}
 
 /**
  * @description: Get all content for a project

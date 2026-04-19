@@ -72,6 +72,7 @@ func main() {
 		{
 			content.GET("/project/:projectId", handlers.GetProjectContent)
 			content.GET("/:id", handlers.GetContentByID)
+			content.GET("/:id/download", handlers.GetContentDownloadURL)
 			content.POST("", handlers.CreateContent)
 			content.POST("/generate", handlers.GenerateAndCreateContent) // legacy synchronous
 			content.DELETE("/:id", handlers.DeleteContent)

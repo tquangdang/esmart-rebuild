@@ -136,10 +136,19 @@ func (w *Worker) process(parent context.Context, job Job, ack Ack) {
 		return
 	}
 
-	s3URL := storage.UploadContent(ctx, content.ProjectID, content.ID, state.Final)
-	if s3URL != "" {
-		content.S3URL = &s3URL
-		_ = config.DB.Model(&content).Update("s3Url", s3URL).Error
+	// Persist the S3 *key* (not URL) so we can re-sign on demand later.
+	// The URL we broadcast to the client is freshly presigned with a TTL.
+	s3Key := storage.UploadContent(ctx, content.ProjectID, content.ID, state.Final)
+	var presignedURL string
+	if s3Key != "" {
+		content.S3URL = &s3Key
+		_ = config.DB.Model(&content).Update("s3Url", s3Key).Error
+
+		if u, err := storage.PresignDownload(ctx, s3Key); err == nil {
+			presignedURL = u
+		} else {
+			slog.Warn("presign download failed", "key", s3Key, "err", err)
+		}
 	}
 
 	patch := map[string]any{
@@ -147,8 +156,8 @@ func (w *Worker) process(parent context.Context, job Job, ack Ack) {
 		"currentStep": agents.StepMeta,
 		"contentId":   content.ID,
 	}
-	if s3URL != "" {
-		patch["s3Url"] = s3URL
+	if s3Key != "" {
+		patch["s3Url"] = s3Key
 	}
 	updateJob(job.ID, patch)
 
@@ -162,7 +171,7 @@ func (w *Worker) process(parent context.Context, job Job, ack Ack) {
 		Done:      true,
 		Final:     state.Final,
 		ContentID: content.ID,
-		S3URL:     s3URL,
+		S3URL:     presignedURL,
 		Meta:      state.Meta,
 	})
 	metrics.Counter("PipelineSuccess", 1)
