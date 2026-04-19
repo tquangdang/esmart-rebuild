@@ -74,6 +74,11 @@ func buildWriterPrompt(input PipelineInput, brief *ResearchBrief, retryFeedback 
 	b.WriteString("- 800-1500 words for blog posts, 300-600 for shorter formats.\n")
 	b.WriteString("- Natural keyword placement, not stuffing.\n")
 	b.WriteString("- Engaging intro, scannable sections, clear conclusion.\n")
+	b.WriteString("\nSTRICT OUTPUT RULES (failure to follow these makes the output unusable):\n")
+	b.WriteString("- Output ONLY the article body. No preamble, no commentary.\n")
+	b.WriteString("- Do NOT wrap the output in ``` code fences.\n")
+	b.WriteString("- Do NOT add a trailing summary block such as \"Word count:\", \"Keywords:\", \"Tone:\", \"Notes:\", \"SEO:\", \"Meta:\".\n")
+	b.WriteString("- The very last line of your response must be the conclusion of the article itself.\n")
 	b.WriteString("\nWrite the content now.")
 
 	return b.String()

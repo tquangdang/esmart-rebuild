@@ -32,7 +32,9 @@ func RunEditor(ctx context.Context, draft string, report *SEOReport, emit func(A
 
 Rules:
 - Preserve the original voice and core information.
-- Output ONLY the improved Markdown, no commentary, no fences.
+- Output ONLY the improved Markdown article body.
+- Do NOT wrap the output in ` + "```" + ` code fences.
+- Do NOT add a trailing summary block such as "Word count:", "Keywords:", "Tone:", "Notes:", "SEO:", "Meta:". The very last line must be the conclusion of the article itself.
 - Keep all H2 headings; you may rename or add subheadings.
 - Naturally fix every listed issue.
 

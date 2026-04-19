@@ -3,6 +3,7 @@ package agents
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -54,6 +55,7 @@ func Pipeline(ctx context.Context, input PipelineInput, emit func(AgentEvent)) (
 			return state, fmt.Errorf("writer: %w", err)
 		}
 		draft = stripCodeFences(draft)
+		draft = stripTrailingMeta(draft)
 		state.Draft = draft
 
 		if err := ctx.Err(); err != nil {
@@ -94,7 +96,7 @@ func Pipeline(ctx context.Context, input PipelineInput, emit func(AgentEvent)) (
 			emit(AgentEvent{Step: StepEditor, Status: StatusError, Message: err.Error()})
 			state.Final = draft
 		} else {
-			state.Final = stripCodeFences(final)
+			state.Final = stripTrailingMeta(stripCodeFences(final))
 		}
 	}
 
@@ -128,6 +130,55 @@ func formatIssuesForRetry(issues []SEOIssue) string {
 func stripMarkdown(s string) string {
 	r := strings.NewReplacer("#", "", "*", "", "_", "", "`", "", ">", "")
 	return strings.TrimSpace(r.Replace(s))
+}
+
+// trailingMetaLine matches lines that look like the model's "summary footer"
+// such as "**Word count:** ~600", "**Keywords:** foo, bar", "**Tone:** Friendly".
+// We only strip these from the END of the document, never from the middle, so
+// legitimate emphasized text in the article body is preserved.
+var trailingMetaLine = regexp.MustCompile(`(?i)^\s*[*_]{0,2}\s*(word\s*count|keywords?(\s+naturally(\s+integrated)?)?|tone|notes?|seo(\s+notes?)?|meta(\s+description)?|summary|read(ing)?\s*time|target\s*audience|cta|call\s*to\s*action)\s*[*_]{0,2}\s*[:：]`)
+
+// stripTrailingMeta removes any "summary footer" the LLM appended after the
+// real article. It walks from the end of the document upward, dropping blank
+// lines, code fences, horizontal rules, and lines that look like meta labels,
+// stopping as soon as it hits the first line of real article content.
+func stripTrailingMeta(s string) string {
+	lines := strings.Split(s, "\n")
+	end := len(lines)
+
+	insideTrailingFence := false
+	for end > 0 {
+		line := strings.TrimSpace(lines[end-1])
+
+		if line == "" {
+			end--
+			continue
+		}
+		// A code fence at the end of the doc is almost always wrapping the
+		// meta block — drop it (and toggle so the matching opener is dropped
+		// once we reach it).
+		if strings.HasPrefix(line, "```") {
+			insideTrailingFence = !insideTrailingFence
+			end--
+			continue
+		}
+		// Horizontal rules / divider lines the model uses before the footer.
+		if line == "---" || line == "***" || line == "___" {
+			end--
+			continue
+		}
+		if insideTrailingFence {
+			end--
+			continue
+		}
+		if trailingMetaLine.MatchString(line) {
+			end--
+			continue
+		}
+		break
+	}
+
+	return strings.TrimRight(strings.Join(lines[:end], "\n"), " \t\n")
 }
 
 // stripCodeFences removes a wrapping ```...``` block (with optional language
