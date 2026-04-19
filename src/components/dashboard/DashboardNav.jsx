@@ -3,6 +3,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../../config/firebase'
 import { useAuth } from '../../stores/auth'
 import { useToast } from '../../stores/toast'
+import NotificationBell from '../NotificationBell'
 
 export default function DashboardNav() {
   const { user } = useAuth()
@@ -32,6 +33,7 @@ export default function DashboardNav() {
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:inline">
           {user?.displayName}
         </span>
+        <NotificationBell />
         <button
           onClick={handleSignOut}
           className="text-sm text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium transition active:scale-95 ml-1"

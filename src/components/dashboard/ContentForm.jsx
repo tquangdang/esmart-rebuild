@@ -87,7 +87,14 @@ export default function ContentForm({ step, formData, setFormData, onNext, onBac
           </button>
           <button
             onClick={onGenerate}
-            disabled={!formData.topic || generating}
+            disabled={!formData.topic?.trim() || !formData.keywords?.trim() || generating}
+            title={
+              !formData.topic?.trim()
+                ? 'Topic is required'
+                : !formData.keywords?.trim()
+                ? 'Keywords are required'
+                : undefined
+            }
             className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {generating ? (

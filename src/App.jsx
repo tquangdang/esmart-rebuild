@@ -16,6 +16,7 @@ import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './stores/auth'
 import { ToastProvider } from './stores/toast'
 import { ThemeProvider } from './stores/theme'
+import { NotificationProvider } from './stores/notifications'
 
 function AppLayout() {
   const location = useLocation()
@@ -32,7 +33,14 @@ function AppLayout() {
         <Route path="/services/:slug" element={<ServiceDetail />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <NotificationProvider>
+              <Dashboard />
+            </NotificationProvider>
+          }
+        />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/assessment" element={<MarketingAssessment />} />

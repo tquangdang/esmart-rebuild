@@ -29,3 +29,7 @@ dist-ssr
 go-service/.env
 go-service/*.exe
 go-service/*.exe~
+
+# Local docs / scratch files (không push)
+esmart-architecture-guide.html
+downloaded.md
